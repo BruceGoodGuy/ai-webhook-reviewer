@@ -1,0 +1,103 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+venv/
+ENV/
+.venv/
+env.bak/
+venv.bak/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# PyCharm / VSCode / other IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Environments
+.env
+.env.*
+*.env
+.venv/
+review
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+
+# --- FastAPI specific ---
+# Uvicorn / Gunicorn logs
+*.log
+logs/
+*.pid
+
+# SQLite databases
+*.db
+*.sqlite3
+
+# --- Docker ---
+*.dockerfile
+*.dockerignore
+docker-compose.override.yml
+.docker/
+
+# --- OS / Misc ---
+.DS_Store
+Thumbs.db
