@@ -9,6 +9,5 @@ def verify_signature(raw: bytes, sig: str):
 
 
 def make_a_call(url: str, headers: dict = None, data: dict = None):
-    print("This is a call from utils.py")
     response = requests.get(url, headers=headers, json=data)
     return response.json()

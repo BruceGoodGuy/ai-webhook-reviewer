@@ -74,4 +74,3 @@ async def test_ai_chain():
     )
 
     response = model.invoke(prompt)
-    print("Prompt:", response.content)

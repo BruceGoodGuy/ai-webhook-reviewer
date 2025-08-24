@@ -53,7 +53,6 @@ async def fetch_files(owner: str, repo: str, pr_number: int) -> list[dict]:
         "Accept": "application/vnd.github+json",
         "User-Agent": "ai-review-bot",
     }
-    print(f"header {headers}")
     url = f"{GITHUB_API}/repos/{owner}/{repo}/pulls/{pr_number}/files?per_page=100"
     items = []
     async with httpx.AsyncClient(timeout=60, follow_redirects=True) as client:
@@ -75,18 +74,20 @@ async def add_feedbacks(feedbacks: list[dict], repo_config: dict):
     pr = repo.get_pull(repo_config["pr_number"])
 
     last_commit = pr.get_commits()[pr.commits - 1]
-    print(feedbacks, last_commit)
+
+    comments = [
+        {
+            "path": feedback["filename"],
+            "line": feedback["line"],
+            "side": "RIGHT",
+            "body": feedback["content"],
+        }
+        for feedback in feedbacks
+    ]
 
     pr.create_review(
         commit=last_commit,
         body="AI Code Review",
         event="COMMENT",
-        comments=[
-            {
-                "path": feedback["filename"],
-                "position": feedback["line"],
-                "body": feedback["content"],
-            }
-            for feedback in feedbacks
-        ],
+        comments=comments,
     )

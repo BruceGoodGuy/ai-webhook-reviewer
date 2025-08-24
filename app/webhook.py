@@ -13,9 +13,7 @@ router = APIRouter()
 
 @router.get("/")
 def index():
-    print("Webhook index accessed", settings.GITHUB_API)
-    repo_name = get_repo()
-    return {"message": "Webhook endpoint", "repo_name": repo_name.name}
+    return {"message": "Webhook endpoint"}
 
 
 @router.post("/")
@@ -37,16 +35,30 @@ async def handle_webhook(
     name = repo["name"]
     pr = payload["pull_request"]
     pr_number = pr["number"]
-    
+
     print(f"Processing PR #{pr_number} in {owner}/{name} with action {action}")
 
     fetch_diff_data_result = await fetch_files(owner, name, pr_number)
     if not fetch_diff_data_result:
         return {"ok": False, "error": "Failed to fetch diff data"}
-    if (len(fetch_diff_data_result) > 10000):
+    if len(fetch_diff_data_result) > 10000:
         return {"ok": False, "error": "Diff data is too large"}
     feedbacks = review_changes(fetch_diff_data_result)
     repo_config = {"name": f"{owner}/{name}", "pr_number": pr_number}
-    print(f"Feedbacks generated: {feedbacks}")
-    await add_feedbacks(json.loads(feedbacks), repo_config)
+    
+    feedback_clear = []
+    feedbacks = json.loads(feedbacks)
+    for fb in feedbacks:
+        feedback_clear.append({
+            "filename": fb["filename"],
+            "line": fb["line"],
+            "content": format_body(fb["content"]),
+            "category": fb["category"]
+        })
+    await add_feedbacks((feedback_clear), repo_config)
+
     return {"message": "Webhook processed successfully"}
+
+
+def format_body(raw):
+    return f"```\n{raw}\n```"
